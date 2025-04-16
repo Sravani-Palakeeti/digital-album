@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Varun & Sravani - Wedding Album</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #ffd700, #fff8dc);
+      color: #333;
+      text-align: center;
+    }
+    header {
+      padding: 2rem;
+      background-color: #fff8dc;
+      border-bottom: 4px solid #ffd700;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      color: #b8860b;
+    }
+    form {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 90%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: #b8860b;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .photo {
+      width: 250px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1rem;
+    }
+    .photo img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    .photo .info {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Varun & Sravani's Wedding Album</h1>
+    <p>Scan the QR code to upload your memories 🎉</p>
+  </header>
+
+  <form id="uploadForm">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <textarea id="message" rows="3" placeholder="Your Message"></textarea>
+    <input type="file" id="imageUpload" accept="image/*" required />
+    <button type="submit">Upload Photo</button>
+  </form>
+
+  <div class="gallery" id="gallery"></div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const gallery = document.getElementById('gallery');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+      const file = document.getElementById('imageUpload').files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const photoDiv = document.createElement('div');
+        photoDiv.className = 'photo';
+        photoDiv.innerHTML = `
+          <img src="${event.target.result}" alt="Uploaded Photo" />
+          <div class="info">
+            <strong>${name}</strong><br />
+            <em>${message}</em>
+          </div>
+        `;
+        gallery.prepend(photoDiv);
+        form.reset();
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
